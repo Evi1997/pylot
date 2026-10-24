@@ -86,6 +86,11 @@ function hl(src) {
   return out + esc(src.slice(last));
 }
 const codeBlock = src => `<pre class="code">${hl(src)}</pre>`;
+// Concept examples: move each end-of-line comment onto its own line above the code, so it fits a phone screen.
+const stacked = src => src.split('\n').map(line => {
+  const m = line.match(/^(\s*)(\S.*?)\s{2,}(#.*)$/);
+  return m ? `${m[1]}${m[3]}\n${m[1]}${m[2]}` : line;
+}).join('\n');
 
 // ---------- sound ----------
 let actx;
@@ -198,7 +203,7 @@ function practiceView() {
     <section class="card">
       <h2>Cheat sheet</h2>
       <p class="muted">Every concept you've unlocked, in one place.</p>
-      ${cards.length ? cards.map(({ i, l }) => `<details class="sheet"><summary>${esc(i.h)} <span class="muted">${COURSE[l.unit].title}</span></summary><p>${md(i.b)}</p>${codeBlock(i.code)}</details>`).join('') : '<p class="muted">Nothing yet.</p>'}
+      ${cards.length ? cards.map(({ i, l }) => `<details class="sheet"><summary>${esc(i.h)} <span class="muted">${COURSE[l.unit].title}</span></summary><p>${md(i.b)}</p>${codeBlock(stacked(i.code))}</details>`).join('') : '<p class="muted">Nothing yet.</p>'}
     </section>
     <section class="card">
       <h2>Daily goal</h2>
@@ -267,7 +272,7 @@ function renderLesson() {
 function exHtml(ex) {
   switch (ex.t) {
     case 'learn':
-      return `<p class="tag">New concept</p><h1>${esc(ex.h)}</h1><p class="lead">${md(ex.b)}</p>${codeBlock(ex.code)}
+      return `<p class="tag">New concept</p><h1>${esc(ex.h)}</h1><p class="lead">${md(ex.b)}</p>${codeBlock(stacked(ex.code))}
         ${ex.norun ? '<p class="muted small">Read-only example (needs internet or an API key).</p>' : '<button class="btn ghost small" data-act="try">Run it</button><div id="try-out" aria-live="polite"></div>'}`;
     case 'mc': {
       L.view.opts = shuffle(ex.o.map((text, i) => ({ text, right: i === 0 })));

@@ -128,7 +128,9 @@ details.sheet summary .muted { font-weight: 400; font-size: .8rem; }
 .combo.hot { color: var(--brand); }
 .ex { flex: 1; padding: 8px 16px 24px; }
 .ex h1.pre { white-space: pre-line; font-size: 1.15rem; }
-.lead { font-size: 1.05rem; }
+.lead { font-size: 1.05rem; white-space: pre-line; line-height: 1.6; }
+details.sheet p { white-space: pre-line; }
+.lead + .code, details.sheet .code { white-space: pre-wrap; }
 .tag { display: inline-block; font-size: .78rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--brand); margin-bottom: .5rem; }
 .opts { display: flex; flex-direction: column; gap: .6rem; margin-top: 1rem; }
 .opt { display: flex; align-items: center; gap: .75rem; text-align: left; padding: .8rem 1rem; min-height: 52px; background: var(--surface); border: 2px solid var(--line); border-radius: 14px; box-shadow: 0 3px 0 var(--line); }
